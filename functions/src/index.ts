@@ -9,18 +9,13 @@ export const helloWorld = functions.https.onRequest((request, response) => {
   response.send("Hello from Firebase!");
 });
 
-const nextjsDistDir = ".next";
+// const nextjsDistDir = ".next";
 const nextjsServer = next({
   dev: false,
-  dir: ".",
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore // due to issue with type file
   conf: {
-    distDir: nextjsDistDir,
-    experimental: {
-
-    },
-    future: {
-
-    },
+    distDir: ".next",
   },
 });
 
