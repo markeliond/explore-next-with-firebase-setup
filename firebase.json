@@ -13,7 +13,7 @@
     "public": "public",
     "rewrites": [ {
       "source": "**",
-      "function": "helloWorld"
+      "function": "nextServe"
     } ],
     "ignore": [
       "firebase.json",
