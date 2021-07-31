@@ -3,10 +3,21 @@
     "main": "server.js",
     "scripts": {
         "dev": "next dev",
+        "debug": "NODE_OPTIONS='--inspect' next",
+        "build-with-emu": "NEXT_PUBLIC_USE_FIRESTORE_EMULATOR=1 next build",
         "build": "next build",
+        "start-dev-emulators": "firebase emulators:start --only firestore,auth,storage",
+        "start-dev-emulators-seeded": "firebase emulators:start --only firestore,auth,storage --import=./tests/seed",
+        "dev-emulate": "concurrently --names emul,dev --kill-others \"npm:start-dev-emulators\" \"npm:dev\" ",
+        "dev-emulate-seeded": "concurrently --names emul,dev --kill-others \"npm:start-dev-emulators-seeded\" \"npm:dev\" ",
+        "debug-emulate-seeded": "concurrently --names emul,debug --kill-others \"npm:start-dev-emulators-seeded\" \"npm:debug\" ",
+        "serve": "npm run build-with-emu && firebase emulators:start --only functions,hosting,firestore,auth,storage",
+        "shell": "npm run build && firebase functions:shell",
         "start": "next start",
         "lint": "next lint",
-        "deploy": "firebase deploy"
+        "deploy": "firebase deploy",
+        "logs": "firebase functions:log",
+        "unit-test": "jest"
     },
     "engines": {
         "node": "14"
@@ -19,9 +30,12 @@
         "firebase-functions": "^3.14.1"
     },
     "devDependencies": {
+        "@playwright/test": "^1.13.1",
         "@types/react": "^17.0.15",
         "@types/react-dom": "^17.0.9",
-        "typescript": "^4.3.5",
-        "firebase-functions-test": "^0.2.0"
+        "concurrently": "^6.2.0",
+        "firebase-functions-test": "^0.2.0",
+        "playwright": "^1.13.1",
+        "typescript": "^4.3.5"
     }
 }
