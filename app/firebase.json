@@ -14,8 +14,10 @@
 			"helpers/**",
 			"pages/**",
 			"public/**",
-			"firestore.rules",
-			"readme.md"
+      "src/**",
+			"*.rules",
+			"readme.md",
+      "tests/**"
 		]
   },
   "hosting": {

@@ -17,7 +17,8 @@
         "lint": "next lint",
         "deploy": "firebase deploy",
         "logs": "firebase functions:log",
-        "unit-test": "jest"
+        "unit-test": "jest",
+        "integration-test": "npx playwright test"
     },
     "engines": {
         "node": "14"
