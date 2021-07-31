@@ -8,7 +8,7 @@ export default function Home() {
             <title>Next with Firebase</title>
         </Head>
         <section>
-            <h1>Next with Firebase</h1>
+            <h1 id='page-title'>Next with Firebase</h1>
         </section>
         <section>
             <p>This is an example</p>
