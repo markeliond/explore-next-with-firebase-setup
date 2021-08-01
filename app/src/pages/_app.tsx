@@ -1,4 +1,5 @@
-import type { AppProps } from 'next/app'
+import React from 'react';
+import type { AppProps } from 'next/app';
 
 // import initialiseFirebaseApp from '../utils/firebase-config';
 
