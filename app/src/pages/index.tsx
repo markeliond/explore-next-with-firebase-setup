@@ -32,7 +32,7 @@ export default function Home() {
               Next with Firebase
             </Typography>
             <Box sx={{ mt: 1 }}>
-              <Typography id='page-title' component="h1" variant="h5">
+              <Typography component="h1" variant="h5">
                 This is an example
               </Typography>
             </Box>
