@@ -18,3 +18,6 @@ const server = functions.https.onRequest((request, response) => {
 });
 
 exports.nextjs = { server };
+
+// uses structure from : https://github.com/jthegedus/firebase-gcp-examples/tree/main/functions-nextjs
+
