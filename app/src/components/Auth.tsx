@@ -111,6 +111,22 @@ export const Auth = () => {
   }
 };
 
+export const AuthFallback = () => {
+  const { status, data: signinResult } = useSigninCheck();
+
+  if (status === 'loading') {
+    return <CircularProgress />;
+  }
+
+  const { signedIn, user } = signinResult;
+
+  if (signedIn === true) {
+    return;
+  } else {
+    return <SignInForm />;
+  }
+};
+
 
 export const AccountToolbarIcon = () => {
 
