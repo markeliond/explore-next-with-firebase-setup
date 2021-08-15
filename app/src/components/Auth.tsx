@@ -4,13 +4,15 @@ import { useAuth, useSigninCheck } from 'reactfire';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Avatar from '@material-ui/core/Avatar';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
+import MenuItem from '@material-ui/core/MenuItem';
+import AccountCircle from '@material-ui/icons/AccountCircle';
+import Menu from '@material-ui/core/Menu';
+import IconButton from '@material-ui/core/IconButton';
 
 const signOut = auth => auth.signOut().then(() => console.log('signed out'));
 
@@ -28,6 +30,10 @@ export const AuthWrapper = ({ children, fallback }: React.PropsWithChildren<{ fa
 
   return fallback;
 };
+
+export const UserDetailsAvatar = ({ user }) => {
+  return <Avatar>{user.displayName[0]}</Avatar>
+}
 
 const UserDetails = ({ user }) => {
   const auth = useAuth();
@@ -104,3 +110,78 @@ export const Auth = () => {
     return <SignInForm />;
   }
 };
+
+
+export const AccountToolbarIcon = () => {
+
+  const { status: authStatus, data: signinResult } = useSigninCheck();
+  const auth = useAuth();
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  if (authStatus === 'loading') {
+    return <CircularProgress />;
+  }
+
+  const { signedIn, user } = signinResult;
+
+
+  const handleMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+return (
+  <>
+      <IconButton
+        size="large"
+        aria-label="account of current user"
+        aria-controls="menu-appbar"
+        aria-haspopup="true"
+        onClick={handleMenu}
+        color="inherit"
+      >
+        {!!signedIn && (
+            <>
+                <UserDetailsAvatar user={user} /> 
+            </>
+        )}
+        {!signedIn && (
+            <>
+                <AccountCircle /> 
+            </>
+        )}
+      </IconButton>
+
+      <Menu
+          id="menu-appbar"
+          anchorEl={anchorEl}
+          anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+          }}
+          keepMounted
+          transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+          }}
+          open={Boolean(anchorEl)}
+          onClose={handleClose}
+      >
+          {!!signedIn && (
+              <>
+                  <MenuItem onClick={handleClose}>Profile</MenuItem> 
+                  <MenuItem onClick={() => { handleClose(); signOut(auth); } }>Sign Out</MenuItem> 
+              </>
+          )}
+          {!signedIn && (
+              <>
+                  <MenuItem onClick={handleClose}>Sign In</MenuItem> 
+              </>
+          )}
+      </Menu>
+    </>
+  )
+}

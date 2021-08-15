@@ -9,6 +9,7 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 
 import { Auth } from '../components/Auth';
+import MenuBar from '../components/MenuBar';
 
 export default function Home() {
   return (
@@ -16,6 +17,7 @@ export default function Home() {
         <Head>
             <title>Next with Firebase</title>
         </Head>
+        <MenuBar />
         <Grid container component="main" sx={{ height: '100vh' }}>
           <CssBaseline />
           <Grid item xs={12} sm={12} md={6} component={Paper} elevation={6} square>
