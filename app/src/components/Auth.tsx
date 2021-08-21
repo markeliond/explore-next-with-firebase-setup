@@ -84,7 +84,7 @@ const SignInForm = () => {
         <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
           <LockOutlinedIcon />
         </Avatar>
-        <Typography component="h1" variant="h5">
+        <Typography id="sign-in-prompt" component="h1" variant="h5">
           Sign in
         </Typography>
 
@@ -158,6 +158,7 @@ return (
         aria-haspopup="true"
         onClick={handleMenu}
         color="inherit"
+        id="user-avatar"
       >
         {!!signedIn && (
             <>

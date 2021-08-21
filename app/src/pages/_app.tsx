@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import type { AppProps } from 'next/app';
 
 import { FirebaseAppProvider } from 'reactfire';
@@ -80,13 +80,17 @@ const preloadData = async firebaseApp => {
 const MainApp = ({children}) => {
     const firebaseApp = useFirebaseApp();
 
+    const [isPreloaded, setIsPreloaded] = useState(false);
+
     // Kick off fetches for SDKs and data that
     // we know our components will eventually need.
     //
     // This is OPTIONAL but encouraged as part of the render-as-you-fetch pattern
     // https://reactjs.org/docs/concurrent-mode-suspense.html#approach-3-render-as-you-fetch-using-suspense
     
-    preloadSDKs(firebaseApp).then(() => console.log("SDKs pre-loaded")); //preloadData(firebaseApp));
+    if (!isPreloaded) {
+        preloadSDKs(firebaseApp).then(() => { setIsPreloaded(true); console.log("SDKs pre-loaded")}); //preloadData(firebaseApp));
+    }
 
     return (
         <>
