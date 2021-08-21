@@ -29,6 +29,8 @@ testLoggedIn('successfully loads when user authenticated', async ( { loggedInCon
     expect(await page.textContent('id=page-title')).toMatch(/(Dashboard).*/);
 
     expect(await page.title()).toBe('Dashboard');
+
+    expect(await page.screenshot()).toMatchSnapshot('dashboard.png');
     
 });
 

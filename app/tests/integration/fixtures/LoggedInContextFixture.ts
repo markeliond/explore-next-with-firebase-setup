@@ -1,6 +1,6 @@
 import { test as base } from '@playwright/test';
 import type { BrowserContext,  } from '@playwright/test';
-import { TEST_SERVER_URL } from '../testHelpers';
+import { TEST_SERVER_URL, DEFAULT_USER_EMAIL, DEFAULT_USER_PASSWORD } from '../testHelpers';
 
 // Declare worker fixtures.
 type LoggedInContextFixtures = {
@@ -21,9 +21,9 @@ const test = base.extend<{}, LoggedInContextFixtures>({
     const page = await context.newPage();
     await page.goto(`${TEST_SERVER_URL}/dashboard`);
     await page.waitForSelector('.firebaseui-title');
-    await page.fill('input[name="email"]', 'mark@eliondigital.com');
+    await page.fill('input[name="email"]', DEFAULT_USER_EMAIL);
     await page.click('text=Next');
-    await page.fill('input[name="password"]', 'tester');
+    await page.fill('input[name="password"]', DEFAULT_USER_PASSWORD);
     await page.click('button:has-text("sign in")');
     await page.waitForSelector('id=user-avatar');
     console.log('Logging in...done');
