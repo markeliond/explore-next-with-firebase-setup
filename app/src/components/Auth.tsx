@@ -188,15 +188,15 @@ return (
           onClose={handleClose}
       >
           {!!signedIn && (
-              <>
-                  <MenuItem onClick={handleClose}>Profile</MenuItem> 
-                  <MenuItem onClick={() => { handleClose(); signOut(auth); } }>Sign Out</MenuItem> 
-              </>
+              [
+                  <MenuItem key='profile' onClick={handleClose}>Profile</MenuItem>, 
+                  <MenuItem key='sign-out' onClick={() => { handleClose(); signOut(auth); } }>Sign Out</MenuItem> 
+              ]
           )}
           {!signedIn && (
-              <>
-                  <MenuItem onClick={handleClose}>Sign In</MenuItem> 
-              </>
+              [
+                  <MenuItem key='sign-in' onClick={handleClose}>Sign In</MenuItem> 
+              ]
           )}
       </Menu>
     </>
