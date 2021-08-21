@@ -1,21 +1,6 @@
 import React, { useState } from 'react';
 import type { AppProps } from 'next/app';
 
-import { FirebaseAppProvider } from 'reactfire';
-
-
-// Import auth directly because most components need it
-// Other Firebase libraries can be lazy-loaded as-needed
-import 'firebase/auth';
-
-import {
-    preloadFirestoreDoc,
-    useFirebaseApp,
-    preloadUser,
-    preloadAuth,
-    preloadFirestore,
-    preloadStorage
-  } from 'reactfire';
 
 
 
@@ -33,80 +18,43 @@ const firebaseConfig: { [key: string]: unknown } = {
 
 const shouldUseEmulators = process.env.NEXT_PUBLIC_USE_FIRESTORE_EMULATOR == '1';
 
-// Our components will lazy load the
-// SDKs to decrease their bundle size.
-// Since we know that, we can start
-// fetching them now
-const preloadSDKs = firebaseApp => {
-    return Promise.all([
-        preloadFirestore({
-            firebaseApp: firebaseApp,
-            setup: async (firestore) => {
-                //await firestore().enablePersistence();
-                if (shouldUseEmulators) firestore().useEmulator('localhost', 8080);
-                return;
-            }
-        }),
-        preloadStorage({
-            firebaseApp,
-            setup: async (storage) => {
-                storage().setMaxUploadRetryTime(10000);
-                if (shouldUseEmulators) storage().useEmulator("localhost", 9199);
-                return;
-            }
-        }),
-        preloadAuth({ 
-            firebaseApp: firebaseApp, 
-            setup: async (auth) => {
-                //await firestore().enablePersistence();
-                if (shouldUseEmulators) auth().useEmulator("http://localhost:9099");
-                return;
-            }}),
-        ]);
-};
 
-const preloadData = async firebaseApp => {
-    const user = await preloadUser(firebaseApp);
+import { getAuth, connectAuthEmulator } from 'firebase/auth'; // Firebase v9+
+import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore'; // Firebase v9+
 
-    if (user) {
-        preloadFirestoreDoc(
-        firestore => firestore.doc('count/counter'),
-        firebaseApp
-        );
-    }
-};
+import { FirebaseAppProvider, FirestoreProvider, AuthProvider, useFirebaseApp } from 'reactfire';
 
+function FirebaseComponents({ children }) {
+  const app = useFirebaseApp(); // a parent component contains a `FirebaseAppProvider`
 
-const MainApp = ({children}) => {
-    const firebaseApp = useFirebaseApp();
+  // initialize Database and Auth with the normal Firebase SDK functions
+  const firestore = getFirestore(app);
+  const auth = getAuth(app);
 
-    const [isPreloaded, setIsPreloaded] = useState(false);
+  if (shouldUseEmulators) {
+    // Set up emulators
+    connectFirestoreEmulator(firestore, 'localhost', 8080);
+    connectAuthEmulator(auth, 'http://localhost:9099');
+  }
 
-    // Kick off fetches for SDKs and data that
-    // we know our components will eventually need.
-    //
-    // This is OPTIONAL but encouraged as part of the render-as-you-fetch pattern
-    // https://reactjs.org/docs/concurrent-mode-suspense.html#approach-3-render-as-you-fetch-using-suspense
-    
-    if (!isPreloaded) {
-        preloadSDKs(firebaseApp).then(() => { setIsPreloaded(true); console.log("SDKs pre-loaded")}); //preloadData(firebaseApp));
-    }
-
-    return (
-        <>
-            {children}
-        </>
-    );
-};
+  // any child components will be able to use `useUser`,  etc
+  return (
+    <AuthProvider sdk={auth}>
+      <FirestoreProvider sdk={firestore}>
+        <>{children}</>
+      </FirestoreProvider>
+    </AuthProvider>
+  );
+}
 
 function App({ Component, pageProps }: AppProps) {
 
     return ( 
         <div className="flex flex-wrap justify-around p-4">
             <FirebaseAppProvider firebaseConfig={firebaseConfig} >
-                <MainApp> 
+                <FirebaseComponents>
                     <Component {...pageProps} />
-                </MainApp>
+                </FirebaseComponents>
             </FirebaseAppProvider>
         </div>
     );

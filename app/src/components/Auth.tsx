@@ -1,6 +1,8 @@
 import React from 'react';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import { useAuth, useSigninCheck } from 'reactfire';
+import firebase from 'firebase/compat/app';
+import "firebase/compat/auth";
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Avatar from '@material-ui/core/Avatar';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -59,11 +61,11 @@ const UserDetails = ({ user }) => {
 
 
 const SignInForm = () => {
-  const auth = useAuth;
+  const auth = useAuth();
 
   const uiConfig = {
     signInFlow: 'popup',
-    signInOptions: [auth.EmailAuthProvider.PROVIDER_ID],
+    signInOptions: [firebase.auth.EmailAuthProvider.PROVIDER_ID],
     callbacks: {
       // Avoid redirects after sign-in.
       signInSuccessWithAuthResult: () => false
@@ -89,7 +91,7 @@ const SignInForm = () => {
         </Typography>
 
       </Box>
-            <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={auth()} />
+            <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={auth} />
       </Container>
 
   );
