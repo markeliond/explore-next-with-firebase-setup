@@ -5,10 +5,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
 
-import { Auth } from '../components/Auth';
 import MenuBar from '../components/MenuBar';
 
 export default function Home() {
@@ -18,13 +15,11 @@ export default function Home() {
             <title>Next with Firebase</title>
         </Head>
         <MenuBar />
-        <Grid container component="main" sx={{ height: '100vh' }}>
+        <Container component="main" maxWidth="xs">
           <CssBaseline />
-          <Grid item xs={12} sm={12} md={6} component={Paper} elevation={6} square>
-            <Box
+          <Box
               sx={{
-                my: 8,
-                mx: 4,
+                marginTop: 8,
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
@@ -39,11 +34,7 @@ export default function Home() {
               </Typography>
             </Box>
           </Box>
-          </Grid>
-          <Grid item xs={12} sm={12} md={6} component={Paper} elevation={6} square>
-            <Auth />
-          </Grid>
-        </Grid>
+        </Container>
     </>
   )
 }

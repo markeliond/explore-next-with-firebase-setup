@@ -17,7 +17,7 @@ const test = base.extend<{}, LoggedInContextFixtures>({
     const context = await browser.newContext();
     
     // Login.
-    console.log('Logging in...');
+    // console.log('Logging in...');
     const page = await context.newPage();
     await page.goto(`${TEST_SERVER_URL}/dashboard`);
     await page.waitForSelector('.firebaseui-title');
@@ -26,7 +26,7 @@ const test = base.extend<{}, LoggedInContextFixtures>({
     await page.fill('input[name="password"]', DEFAULT_USER_PASSWORD);
     await page.click('button:has-text("sign in")');
     await page.waitForSelector('id=user-avatar');
-    console.log('Logging in...done');
+    // console.log('Logging in...done');
 
     // Use the logged in context in the tests.
     await use(context);

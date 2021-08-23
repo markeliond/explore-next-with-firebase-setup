@@ -1,4 +1,5 @@
 import React from 'react';
+import { useRouter } from 'next/router';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import { useAuth, useSigninCheck } from 'reactfire';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -14,7 +15,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import Menu from '@material-ui/core/Menu';
 import IconButton from '@material-ui/core/IconButton';
 
-const signOut = auth => auth.signOut().then(() => console.log('signed out'));
+const signOut = async auth => await auth.signOut();
 
 export const AuthWrapper = ({ children, fallback }: React.PropsWithChildren<{ fallback: JSX.Element }>): JSX.Element => {
   const { status, data: signInCheckResult } = useSigninCheck();
@@ -23,7 +24,7 @@ export const AuthWrapper = ({ children, fallback }: React.PropsWithChildren<{ fa
     throw new Error('Children must be provided');
   }
   if (status === 'loading') {
-    return <CircularProgress />;
+    return <AuthLoading />;
   } else if (signInCheckResult.signedIn === true) {
     return children as JSX.Element;
   }
@@ -58,7 +59,7 @@ const UserDetails = ({ user }) => {
 //       </CardSection>
 
 
-const SignInForm = () => {
+export const SignInForm = () => {
   const auth = useAuth;
 
   const uiConfig = {
@@ -99,7 +100,7 @@ export const Auth = () => {
   const { status, data: signinResult } = useSigninCheck();
 
   if (status === 'loading') {
-    return <CircularProgress />;
+    return <AuthLoading />;
   }
 
   const { signedIn, user } = signinResult;
@@ -115,7 +116,7 @@ export const AuthFallback = () => {
   const { status, data: signinResult } = useSigninCheck();
 
   if (status === 'loading') {
-    return <CircularProgress />;
+    return <AuthLoading />;
   }
 
   const { signedIn, user } = signinResult;
@@ -127,6 +128,21 @@ export const AuthFallback = () => {
   }
 };
 
+export const AuthLoading = () => {
+  return (
+    <Box
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minHeight: '10rem',
+      }}
+    >
+      <CircularProgress />
+    </Box>
+  );
+}
+
 
 export const AccountToolbarIcon = () => {
 
@@ -135,8 +151,10 @@ export const AccountToolbarIcon = () => {
 
   const [anchorEl, setAnchorEl] = React.useState(null);
 
+  const router = useRouter();
+
   if (authStatus === 'loading') {
-    return <CircularProgress />;
+    return <AuthLoading />;
   }
 
   const { signedIn, user } = signinResult;
@@ -190,12 +208,12 @@ return (
           {!!signedIn && (
               [
                   <MenuItem key='profile' onClick={handleClose}>Profile</MenuItem>, 
-                  <MenuItem key='sign-out' onClick={() => { handleClose(); signOut(auth); } }>Sign Out</MenuItem> 
+                  <MenuItem key='sign-out' onClick={() => { handleClose(); router.push('/').then( () => signOut(auth) ) } }>Sign Out</MenuItem> 
               ]
           )}
           {!signedIn && (
               [
-                  <MenuItem key='sign-in' onClick={handleClose}>Sign In</MenuItem> 
+                  <MenuItem key='sign-in' onClick={() => { handleClose(); router.push('/signin'); } }>Sign In</MenuItem> 
               ]
           )}
       </Menu>
