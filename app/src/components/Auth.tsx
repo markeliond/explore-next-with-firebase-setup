@@ -1,5 +1,8 @@
 import React from 'react';
 import { useRouter } from 'next/router';
+
+var globalThis = require('globalthis')();
+
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import { useAuth, useSigninCheck } from 'reactfire';
 import CircularProgress from '@material-ui/core/CircularProgress';
