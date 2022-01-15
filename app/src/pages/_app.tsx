@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import type { AppProps } from 'next/app';
 
-import { FirebaseAppProvider, useAuth, useFirestore, useStorage } from 'reactfire';
+import { FirebaseAppProvider, useAuth, useFirestore, useStorage, useFunctions } from 'reactfire';
 
 
 // Import auth directly because most components need it
@@ -10,6 +10,7 @@ import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
 import 'firebase/storage';
+import 'firebase/functions';
 
 
 
@@ -76,6 +77,7 @@ const FirebaseComponents = ({children}) => {
     const auth = useAuth();
     const storage = useStorage();
     const firestore = useFirestore();
+    const functions = useFunctions();
     
     const [isConfigured, setIsConfigured] = useState(false);
 
@@ -84,6 +86,7 @@ const FirebaseComponents = ({children}) => {
             auth.useEmulator("http://localhost:9099");
             storage.useEmulator("localhost", 9199);
             firestore.useEmulator('localhost', 8080);
+            functions.useEmulator('localhost', 5001);
             console.log('finshed configuring enumlators')
         }
         console.log('finshed configuring firebase components')
