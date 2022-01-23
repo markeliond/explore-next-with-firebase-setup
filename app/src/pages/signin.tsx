@@ -3,8 +3,8 @@ import Head from 'next/head';
 import { useRouter } from 'next/router'
 import { useSigninCheck } from 'reactfire';
 
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Container from '@material-ui/core/Container';
+import CssBaseline from '@mui/material/CssBaseline';
+import Container from '@mui/material/Container';
 
 import { SignInForm, AuthLoading } from '../components/Auth';
 import MenuBar from '../components/MenuBar';
