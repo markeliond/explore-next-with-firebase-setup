@@ -26,51 +26,8 @@ const firebaseConfig: { [key: string]: unknown } = {
 };
 
 
+// configure firebase emulators
 const shouldUseEmulators = process.env.NEXT_PUBLIC_USE_FIRESTORE_EMULATOR == '1';
-
-// // Our components will lazy load the
-// // SDKs to decrease their bundle size.
-// // Since we know that, we can start
-// // fetching them now
-// const preloadSDKs = firebaseApp => {
-//     return Promise.all([
-//         preloadFirestore({
-//             firebaseApp: firebaseApp,
-//             setup: async (firestore) => {
-//                 //await firestore().enablePersistence();
-//                 if (shouldUseEmulators) firestore().useEmulator('localhost', 8080);
-//                 return;
-//             }
-//         }),
-//         preloadStorage({
-//             firebaseApp,
-//             setup: async (storage) => {
-//                 storage().setMaxUploadRetryTime(10000);
-//                 if (shouldUseEmulators) storage().useEmulator("localhost", 9199);
-//                 return;
-//             }
-//         }),
-//         preloadAuth({ 
-//             firebaseApp: firebaseApp, 
-//             setup: async (auth) => {
-//                 if (shouldUseEmulators) auth().useEmulator("http://localhost:9099");
-//                 await auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
-//                 return;
-//             }}),
-//         ]);
-// };
-
-// const preloadData = async firebaseApp => {
-//     const user = await preloadUser(firebaseApp);
-
-//     if (user) {
-//         preloadFirestoreDoc(
-//         firestore => firestore.doc('count/counter'),
-//         firebaseApp
-//         );
-//     }
-// };
-
 
 const FirebaseComponents = ({children}) => {
     

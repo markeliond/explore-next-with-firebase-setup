@@ -15,6 +15,12 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import Menu from '@mui/material/Menu';
 import IconButton from '@mui/material/IconButton';
 
+
+/*
+  File below demonstrates basic login and out and user profile view using the Firebase Auth library
+  and reactfire helpers. Will need to adapt these based on new designs
+*/
+
 const signOut = async auth => await auth.signOut();
 
 export const AuthWrapper = ({ children, fallback }: React.PropsWithChildren<{ fallback: JSX.Element }>): JSX.Element => {
@@ -46,17 +52,7 @@ const UserDetails = ({ user }) => {
     </>
   );
 };
-//       <CardSection title="Displayname">{user.displayName}</CardSection>
-//       <CardSection title="Providers">
-//         <ul>
-//           {user.providerData?.map(profile => (
-//             <li key={profile?.providerId}>{profile?.providerId}</li>
-//           ))}
-//         </ul>
-//       </CardSection>
-//       <CardSection title="Sign Out">
-//         <WideButton label="Sign Out" onClick={() => signOut(auth)} />
-//       </CardSection>
+
 
 
 export const SignInForm = () => {
