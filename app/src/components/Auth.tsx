@@ -2,18 +2,24 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import { useAuth, useSigninCheck } from 'reactfire';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import Avatar from '@material-ui/core/Avatar';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Box from '@material-ui/core/Box';
-import Button from '@material-ui/core/Button';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Typography from '@material-ui/core/Typography';
-import Container from '@material-ui/core/Container';
-import MenuItem from '@material-ui/core/MenuItem';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import Menu from '@material-ui/core/Menu';
-import IconButton from '@material-ui/core/IconButton';
+import CircularProgress from '@mui/material/CircularProgress';
+import Avatar from '@mui/material/Avatar';
+import CssBaseline from '@mui/material/CssBaseline';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import MenuItem from '@mui/material/MenuItem';
+import AccountCircle from '@mui/icons-material/AccountCircle';
+import Menu from '@mui/material/Menu';
+import IconButton from '@mui/material/IconButton';
+
+
+/*
+  File below demonstrates basic login and out and user profile view using the Firebase Auth library
+  and reactfire helpers. Will need to adapt these based on new designs
+*/
 
 const signOut = async auth => await auth.signOut();
 
@@ -46,17 +52,7 @@ const UserDetails = ({ user }) => {
     </>
   );
 };
-//       <CardSection title="Displayname">{user.displayName}</CardSection>
-//       <CardSection title="Providers">
-//         <ul>
-//           {user.providerData?.map(profile => (
-//             <li key={profile?.providerId}>{profile?.providerId}</li>
-//           ))}
-//         </ul>
-//       </CardSection>
-//       <CardSection title="Sign Out">
-//         <WideButton label="Sign Out" onClick={() => signOut(auth)} />
-//       </CardSection>
+
 
 
 export const SignInForm = () => {
