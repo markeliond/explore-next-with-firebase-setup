@@ -15,8 +15,19 @@ export const helloWorld = functions.https.onRequest((request, response) => {
 // NOTE: reconfigured functions and server based on example at:
 // https://github.com/jthegedus/firebase-gcp-examples/tree/main/functions-nextjs
 
+// test to see if triggers work
+export const helloWorldFunc = functions.firestore
+  .document('users/{userId}')  
+  .onWrite((change, context) => {
+    functions.logger.info('Created firestore user', change.after.id, change.after.data());
+});
 
-
+// test to see if triggers work
+export const helloWorldAuthFunc = functions.auth
+  .user()
+  .onCreate((user, context) => {
+    functions.logger.info('Created firestore user', user.uid);
+});
 
 const isWithinRadius = (baselat: number, baselong: number, testlat: number, testlong: number, radius: number): boolean => {
   
