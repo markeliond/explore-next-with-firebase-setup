@@ -4,7 +4,6 @@
     "indexes": "firestore.indexes.json"
   },
   "functions": {
-    "source": ".",
 		"ignore": [
 			"firebase.json",
 			"firebase-debug.log",
@@ -20,18 +19,7 @@
       "tests/**"
 		]
   },
-  "hosting": {
-    "public": "public",
-    "rewrites": [{
-        "source": "**",
-        "function": "nextjs-server"
-    }],
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ]
-  },
+  
   "storage": {
     "rules": "storage.rules"
   },
