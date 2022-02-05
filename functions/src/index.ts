@@ -1,8 +1,9 @@
 import * as functions from "firebase-functions";
 
-import * as admin from'firebase-admin';
+import { initializeApp } from "firebase-admin/app";
+import { getFirestore } from 'firebase-admin/firestore';
 
-admin.initializeApp();
+initializeApp();
 
 // // Start writing Firebase Functions
 // // https://firebase.google.com/docs/functions/typescript
@@ -74,14 +75,15 @@ export const calcBaseHoldings = functions.https.onCall(async (data, context) => 
 
   functions.logger.info(`Running holding calc at ${Date.now()}`);
   functions.logger.info(process.env.FIRESTORE_EMULATOR_HOST);
-  
-  
-  const basesCollection = admin.firestore().collection('bases');
+
+  const firestore = getFirestore();
+
+  const basesCollection = firestore.collection('bases');
   const bases = await basesCollection.where('gameId','==','test').get();
 
   functions.logger.info(`Loaded bases - ${bases.size}`);
   
-  const playersCollection = admin.firestore().collection('players');
+  const playersCollection = firestore.collection('players');
   const players = await playersCollection.where('gameId','==','test').get();
 
   functions.logger.info(`Loading players - ${players.size}`);
