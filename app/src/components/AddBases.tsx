@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useMapEvent, MapContainer, Marker, Popup, TileLayer, FeatureGroup , Circle, CircleMarker, Tooltip, Rectangle } from 'react-leaflet'
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css'
+import { collection, where, query, addDoc } from 'firebase/firestore';
 import { useFirestore, useFirestoreCollectionData, useFirestoreDocData, useFunctions } from 'reactfire';
 import { ConstructionOutlined } from '@material-ui/icons';
 
@@ -52,16 +53,16 @@ const AddBases = () => {
 
     const [ clickedPosition, setClickedPosition ] = useState(null);
     
-    const basesCollection = firestore.collection('bases');
-    const basesQuery =  basesCollection.where('gameId','==',currentGame);
-    const { status: baseCollectionStatus, data: bases } = useFirestoreCollectionData<BaseDoc>(basesQuery, {
+    const basesCollection = collection(firestore, 'bases');
+    const basesQuery =  query(basesCollection, where('gameId','==',currentGame));
+    const { status: baseCollectionStatus, data: bases } = useFirestoreCollectionData(basesQuery, {
       idField: 'id',
     });
 
     const onSubmit = fields => {
         console.log(fields);
         
-        basesCollection.add({
+        addDoc( basesCollection, {
             name: fields.basename,
             lat: Number(clickedPosition.lat),
             long: Number(clickedPosition.lng),

@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 
-import { useFirestore, useFirestoreCollectionData, useFirestoreDocData, useUser, useFunctions } from 'reactfire';
+import { doc, setDoc } from 'firebase/firestore';
+import { httpsCallable } from 'firebase/functions';
+
+import { useFirestore, useCallableFunctionResponse, useUser, useFunctions } from 'reactfire';
 
 type PlayerDoc = {
     name: string; 
@@ -35,12 +38,11 @@ const GetLocation = () => {
     }, []);
 
     useEffect( () => {
-        // upload to firestore
-        
-          const ref = firestore.collection('players').doc(user.data.uid);
+                
+          const ref = doc(firestore, 'players', user.data.uid);
         if (timestamp) {
           
-          ref.set({
+          setDoc(ref, {
               name: user.data.displayName,
               locAccuracy: accuracy,
               locTimestamp: timestamp,
@@ -48,7 +50,9 @@ const GetLocation = () => {
               long: lng,
               gameId: 'test',
               team: 'blue',
-          }, { merge: true }).then(res => console.log('updated location on firestore')).catch(err => console.error('unable to update location'));           
+          }, { merge: true })
+          .then(res => console.log('updated location on firestore'))
+          .catch(err => console.error('unable to update location'));           
         }
     }, [timestamp, accuracy, lat, lng]);
     
@@ -71,14 +75,12 @@ const GetLocation = () => {
         }
       }
 
-    const checkHoldingsFn = functions.httpsCallable('calcBaseHoldings');
+    const checkHoldingsFn = httpsCallable<null, null>(functions, 'calcBaseHoldings');
     
     const checkHoldings = () => {
       checkHoldingsFn()
         .then((result) => {
-            // Read result of the Cloud Function.
-            const sanitizedMessage = result?.data?.text;
-            console.log(`Message from checkholdings: ${sanitizedMessage}`);
+            console.log(`Ran checkholdings successfully`);
         });
     }
     

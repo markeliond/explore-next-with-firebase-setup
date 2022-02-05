@@ -3,6 +3,9 @@ import { useRouter } from 'next/router';
 
 var globalThis = require('globalthis')();
 
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
+
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import { useAuth, useSigninCheck } from 'reactfire';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -67,7 +70,7 @@ export const SignInForm = () => {
 
   const uiConfig = {
     signInFlow: 'popup',
-    signInOptions: [auth.EmailAuthProvider.PROVIDER_ID],
+    signInOptions: [firebase.auth.EmailAuthProvider.PROVIDER_ID],
     callbacks: {
       // Avoid redirects after sign-in.
       signInSuccessWithAuthResult: () => false

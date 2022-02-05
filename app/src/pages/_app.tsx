@@ -1,18 +1,15 @@
 import React, { useState } from 'react';
 import type { AppProps } from 'next/app';
 
-var globalThis = require('globalthis/polyfill')();
 
-import { FirebaseAppProvider, useAuth, useFirestore, useStorage, useFunctions } from 'reactfire';
+import { getAuth, connectAuthEmulator } from 'firebase/auth'; // Firebase v9+
+import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore';
+import { getStorage, connectStorageEmulator } from 'firebase/storage';
+import { getFunctions, connectFunctionsEmulator } from 'firebase/functions';
+
+import { FirebaseAppProvider, AuthProvider, StorageProvider, FirestoreProvider, FunctionsProvider, useFirebaseApp  } from 'reactfire';
 
 
-// Import auth directly because most components need it
-// Other Firebase libraries can be lazy-loaded as-needed
-import firebase from 'firebase/app';
-import 'firebase/auth';
-import 'firebase/firestore';
-import 'firebase/storage';
-import 'firebase/functions';
 
 
 
@@ -76,19 +73,23 @@ const shouldUseEmulators = process.env.NEXT_PUBLIC_USE_FIRESTORE_EMULATOR == '1'
 
 const FirebaseComponents = ({children}) => {
     
-    const auth = useAuth();
-    const storage = useStorage();
-    const firestore = useFirestore();
-    const functions = useFunctions();
+    const app = useFirebaseApp();
+
+    const auth = getAuth(app);
+    const storage = getStorage(app);
+    const firestore = getFirestore(app);
+    const functions = getFunctions(app);
     
     const [isConfigured, setIsConfigured] = useState(false);
 
     if (!isConfigured) {
         if (shouldUseEmulators) {
-            auth.useEmulator("http://localhost:9099");
-            storage.useEmulator("localhost", 9199);
-            firestore.useEmulator('localhost', 8080);
-            functions.useEmulator('localhost', 5001);
+            
+            connectAuthEmulator(auth, "http://localhost:9099");
+            connectStorageEmulator(storage, 'localhost', 9199);
+            connectFirestoreEmulator(firestore, 'localhost', 8080);
+            connectFunctionsEmulator(functions, 'localhost', 5001);
+
             console.log('finshed configuring enumlators')
         }
         console.log('finshed configuring firebase components')
@@ -97,7 +98,15 @@ const FirebaseComponents = ({children}) => {
 
     return (
         <>
-            {children}
+            <AuthProvider sdk={auth}>
+                <FunctionsProvider sdk={functions}>
+                    <FirestoreProvider sdk={firestore}>
+                        <StorageProvider sdk={storage}>
+                            {children}
+                        </StorageProvider>
+                    </FirestoreProvider>
+                </FunctionsProvider>
+            </AuthProvider>
         </>
     );
 };

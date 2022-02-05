@@ -7,6 +7,8 @@ import { ConstructionOutlined } from '@material-ui/icons';
 // import firebase from 'firebase';
 // require('firebase/firestore')
 
+import { collection, query, where } from 'firebase/firestore'
+
 
 const currentGame = 'test';
 
@@ -53,37 +55,18 @@ const Map = () => {
     //     id: string;
     // }>(ref);
 
-    const playersCollection = firestore.collection('players');
-    const playersQuery =  playersCollection.where('gameId','==',currentGame);
-    const { status: collectionStatus, data: players } = useFirestoreCollectionData<{
-        name: string; 
-        locAccuracy: number;
-        lat: number;
-        long: number;
-        locTimeStamp: number;
-        gameId: string;
-        team: string;
-        id: string;
-    }>(playersQuery, {
+    const playersCollection = collection(firestore, 'players');
+    const playersQuery =  query(playersCollection, where('gameId','==',currentGame));
+    const { status: collectionStatus, data: players } = useFirestoreCollectionData(playersQuery, {
       idField: 'id',
     });
 
     console.log(players);
     console.log(collectionStatus);
 
-    const basesCollection = firestore.collection('bases');
-    const basesQuery =  basesCollection.where('gameId','==',currentGame);
-    const { status: baseCollectionStatus, data: bases } = useFirestoreCollectionData<{
-        name: string; 
-        lat: number;
-        long: number;
-        radius: number
-        locTimeStamp: number;
-        gameId: string;
-        originalTeam: string;
-        owningTeam: string;
-        id: string;
-    }>(basesQuery, {
+    const basesCollection = collection(firestore, 'bases');
+    const basesQuery =  query( basesCollection, where('gameId','==',currentGame));
+    const { status: baseCollectionStatus, data: bases } = useFirestoreCollectionData(basesQuery, {
       idField: 'id',
     });
 

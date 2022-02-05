@@ -29,18 +29,16 @@
         "@material-ui/icons": "^5.0.0-beta.1",
         "date-fns": "^2.23.0",
         "final-form": "^4.20.4",
-        "firebase": "^8.8.1",
-        "firebase-admin": "^9.8.0",
-        "firebase-functions": "^3.14.1",
+        "firebase": "^9.6.6",
         "globalthis": "^1.0.2",
         "leaflet": "^1.7.1",
         "next": "^11.0.1",
         "react": "^17.0.2",
         "react-dom": "^17.0.2",
         "react-final-form": "^6.5.7",
-        "react-firebaseui": "^5.0.2",
+        "react-firebaseui": "^6.0.0",
         "react-leaflet": "^3.2.2",
-        "reactfire": "^3.0.0-rc.3"
+        "reactfire": "^4.2.1"
     },
     "devDependencies": {
         "@babel/preset-react": "^7.14.5",
