@@ -20,6 +20,7 @@ export const helloWorldFunc = functions.firestore
   .document('users/{userId}')  
   .onWrite((change, context) => {
     functions.logger.info('Created firestore user', change.after.id, change.after.data());
+    return null;
 });
 
 // test to see if triggers work
@@ -27,6 +28,7 @@ export const helloWorldAuthFunc = functions.auth
   .user()
   .onCreate((user, context) => {
     functions.logger.info('Created firestore user', user.uid);
+    return null;
 });
 
 const isWithinRadius = (baselat: number, baselong: number, testlat: number, testlong: number, radius: number): boolean => {
