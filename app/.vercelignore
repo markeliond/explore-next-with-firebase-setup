@@ -1,0 +1,19 @@
+# Firebase cache
+.firebase
+
+# other project folders
+functions
+
+# firebase rules
+firebase.json
+firestore-debug.log
+firestore.indexes.json
+firestore.rules
+storage.rules
+
+
+# test artifects
+tests/
+jest.config.json
+playwright.config.test
+ui-debug.log
