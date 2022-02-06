@@ -14,7 +14,9 @@ import {
   FirebaseAppProvider,
   StorageProvider, 
   FunctionsProvider, 
-  useInitFirestore
+  useInitFirestore,
+  PerformanceProvider,
+  useInitPerformance
 } from 'reactfire';
 import { 
   getStorage, 
@@ -28,7 +30,6 @@ import {
 } from 'firebase/functions';
 import { config, emulation, shouldUseEmulators } from '@/config/firebase';
 import { enableIndexedDbPersistence, initializeFirestore } from 'firebase/firestore';
-import { FirebaseApp } from 'firebase/app';
 
 interface FirestoreExt extends Firestore {
   _settings: FirestoreSettings;
@@ -162,4 +163,35 @@ export const FirebaseFunctionsProvider = ({
     }
   }
   return <FunctionsProvider sdk={functions}>{children}</FunctionsProvider>;
+};
+
+export const FirebasePerformanceProvider = ({
+  children,
+}: {
+  children: JSX.Element;
+}) => {
+
+  const app = useFirebaseApp();
+  //const firestore = getFirestore(app) as FirestoreExt;
+
+  if (shouldUseEmulators) {
+    // just pass through children if we are using emulators
+    return (
+      <>
+        {children}
+      </>
+    )} else {
+      // link up performance library if we are in prod
+      const {status, data: performance} = useInitPerformance(async (firebaseApp) => {
+        const { getPerformance } = await import('firebase/performance');
+        return getPerformance(firebaseApp);
+      });
+
+      if (status === 'loading') {
+        return <></>;
+      }
+
+      return <PerformanceProvider sdk={performance}>{children}</PerformanceProvider>;
+  }
+
 };

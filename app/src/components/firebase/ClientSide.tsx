@@ -1,6 +1,8 @@
 import * as React from 'react';
 import dynamic from 'next/dynamic';
 
+import { useInitPerformance } from 'reactfire'; 
+
 const FirebaseFirestoreProvider = dynamic<any>(
     () =>
       import('@/components/firebase/wrappers').then(
