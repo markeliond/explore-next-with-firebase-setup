@@ -27,6 +27,8 @@ import {
   Functions 
 } from 'firebase/functions';
 import { config, emulation, shouldUseEmulators } from '@/config/firebase';
+import { enableIndexedDbPersistence, initializeFirestore } from 'firebase/firestore';
+import { FirebaseApp } from 'firebase/app';
 
 interface FirestoreExt extends Firestore {
   _settings: FirestoreSettings;
@@ -67,18 +69,37 @@ export const FirebaseFirestoreProvider = ({
 }: {
   children: JSX.Element;
 }) => {
+
+  const enablePersistence = async (db: Firestore) => {
+    await enableIndexedDbPersistence(db);
+  };
+
   const app = useFirebaseApp();
-  const firestore = getFirestore(app) as FirestoreExt;
+  //const firestore = getFirestore(app) as FirestoreExt;
+
+  const {status, data: firestore} = useInitFirestore(async (app) => {
+    const db = initializeFirestore(app, {});
+    return db;
+  });
+
+  if (status === 'loading') {
+    return <></>;
+  }
+
   if (
+    status === 'success' &&
     shouldUseEmulators &&
     emulation.firestoreEmulatorHost &&
-    firestore?._settings?.host != emulation.firestoreEmulatorHost
+    (firestore as FirestoreExt)?._settings?.host != emulation.firestoreEmulatorHost
   ) {
     const { urn, port } = hostSplitter(emulation.firestoreEmulatorHost);
     if (urn && port) {
       connectFirestoreEmulator(firestore, urn, port);
-      console.log(`Connected to firestore emulator on ${emulation.firestoreEmulatorHost}`);
+      enablePersistence(firestore).then( result => {
+        console.log(`Connected to firestore emulator on ${emulation.firestoreEmulatorHost}`);
+      });
     }
+    
   }
   return <FirestoreProvider sdk={firestore}>{children}</FirestoreProvider>;
 };
