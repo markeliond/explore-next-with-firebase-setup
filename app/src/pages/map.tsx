@@ -12,6 +12,10 @@ import Paper from '@material-ui/core/Paper';
 import { AuthWrapper, AuthFallback } from '../components/Auth';
 import MenuBar from '../components/MenuBar';
 
+const ClientSide = dynamic<any>(() => import('@/components/firebase/ClientSide'), {
+    ssr: false,
+  });
+
 export default function MapPage() {
 
     const Map = dynamic(
@@ -26,6 +30,7 @@ export default function MapPage() {
 
   return (
     <>
+    <ClientSide>
         <Head>
             <title>Map Page</title>
         </Head>
@@ -55,6 +60,7 @@ export default function MapPage() {
             </AuthWrapper>
 
         </Container>
+        </ClientSide>
     </>
   )
 }
