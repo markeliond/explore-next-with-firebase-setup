@@ -1,5 +1,6 @@
 import React from 'react';
 import Head from 'next/head';
+import dynamic from 'next/dynamic';
 
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Box from '@material-ui/core/Box';
@@ -11,6 +12,10 @@ import Paper from '@material-ui/core/Paper';
 import { AuthWrapper, AuthFallback } from '../components/Auth';
 import MenuBar from '../components/MenuBar';
 
+const ClientSide = dynamic<any>(() => import('@/components/firebase/ClientSide'), {
+    ssr: false,
+  });
+
 export default function Dashboard() {
   return (
     <>
@@ -18,12 +23,16 @@ export default function Dashboard() {
             <title>Dashboard</title>
         </Head>
 
+        
+
         <MenuBar />
 
         <Container component="main" maxWidth="xs">
             <CssBaseline />
 
             <AuthWrapper fallback={<AuthFallback />}>
+
+            <ClientSide>
 
                 <Box
                     sx={{
@@ -44,11 +53,15 @@ export default function Dashboard() {
                         </Typography>
                     </Box>
                 </Box>
+
+                </ClientSide>
             
             
             </AuthWrapper>
 
         </Container>
+
+        
     </>
   )
 }
