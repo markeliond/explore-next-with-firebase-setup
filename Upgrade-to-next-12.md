@@ -12,6 +12,6 @@ Using: https://nextjs.org/docs/upgrading
 
 - remove babel config
 
-If the babel file is still there, the compiler opts out of suing the new Rust one.
+If the babel file is still there, the compiler opts out of using the new Rust one.
 
 > works fine
